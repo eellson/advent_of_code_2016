@@ -2,35 +2,55 @@ defmodule AdventOfCode.Day1 do
   def run(directions) do
     {_, {x, y}} =
       directions
-      |> String.split(", ")
-      |> Enum.map(&to_instruction_tuple/1)
+      |> into_keyword
       |> Enum.reduce({:n, {0, 0}}, &do_move/2)
 
     abs(x) + abs(y)
   end
 
 
-  def do_move({?R, distance}, {:n, coords}), do: do_move(distance, {:e, coords})
-  def do_move({?R, distance}, {:e, coords}), do: do_move(distance, {:s, coords})
-  def do_move({?R, distance}, {:s, coords}), do: do_move(distance, {:w, coords})
-  def do_move({?R, distance}, {:w, coords}), do: do_move(distance, {:n, coords})
 
-  def do_move({?L, distance}, {:n, coords}), do: do_move(distance, {:w, coords})
-  def do_move({?L, distance}, {:e, coords}), do: do_move(distance, {:n, coords})
-  def do_move({?L, distance}, {:s, coords}), do: do_move(distance, {:e, coords})
-  def do_move({?L, distance}, {:w, coords}), do: do_move(distance, {:s, coords})
+  @spec """
+  Handle rotation or translation, returning transformed {bearing, coordinates}
+  """
+  def do_move({:rotation, ?R}, {:n, coords}), do: {:e, coords}
+  def do_move({:rotation, ?R}, {:e, coords}), do: {:s, coords}
+  def do_move({:rotation, ?R}, {:s, coords}), do: {:w, coords}
+  def do_move({:rotation, ?R}, {:w, coords}), do: {:n, coords}
 
-  def do_move(1, {:n, {x, y}}), do: {:n, {x, y + 1}}
-  def do_move(1, {:e, {x, y}}), do: {:e, {x + 1, y}}
-  def do_move(1, {:s, {x, y}}), do: {:s, {x, y - 1}}
-  def do_move(1, {:w, {x, y}}), do: {:w, {x - 1, y}}
+  def do_move({:rotation, ?L}, {:n, coords}), do: {:w, coords}
+  def do_move({:rotation, ?L}, {:e, coords}), do: {:n, coords}
+  def do_move({:rotation, ?L}, {:s, coords}), do: {:e, coords}
+  def do_move({:rotation, ?L}, {:w, coords}), do: {:s, coords}
 
-  def do_move(n, current) do
-    next = do_move(1, current)
-    do_move(n - 1, next)
+  def do_move({:translation, n}, {:n, {x, y}}), do: {:n, {x, y + n}}
+  def do_move({:translation, n}, {:e, {x, y}}), do: {:e, {x + n, y}}
+  def do_move({:translation, n}, {:s, {x, y}}), do: {:s, {x, y - n}}
+  def do_move({:translation, n}, {:w, {x, y}}), do: {:w, {x - n, y}}
+
+  @spec """
+  Takes list of instructions, turning into Keyword representation.
+  """
+  def into_keyword(directions_string) do
+    directions_string
+    |> String.split(", ")
+    |> Enum.map(&to_tuple/1)
+    |> Enum.map(&to_instruction_tuple/1)
+    |> List.flatten
+    |> Enum.map(&to_unary_translation/1)
+    |> List.flatten
   end
 
-  def to_instruction_tuple(<<rotation::size(8)>> <> translation) do
+  defp to_tuple(<<rotation::size(8)>> <> translation) do
     {rotation, String.to_integer(translation)}
+  end
+
+  defp to_instruction_tuple({rotation, translation}) do
+    [{:rotation, rotation}, {:translation, translation}]
+  end
+
+  defp to_unary_translation({:rotation, _} = rotation), do: rotation
+  defp to_unary_translation({:translation, translation}) do
+    for i <- 1..translation, do: {:translation, 1}
   end
 end
