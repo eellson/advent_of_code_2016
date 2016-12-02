@@ -9,8 +9,7 @@ defmodule AdventOfCode.Day1 do
   end
 
 
-
-  @spec """
+  @doc """
   Handle rotation or translation, returning transformed {bearing, coordinates}
   """
   def do_move({:rotation, ?R}, {:n, coords}), do: {:e, coords}
@@ -28,7 +27,7 @@ defmodule AdventOfCode.Day1 do
   def do_move({:translation, n}, {:s, {x, y}}), do: {:s, {x, y - n}}
   def do_move({:translation, n}, {:w, {x, y}}), do: {:w, {x - n, y}}
 
-  @spec """
+  @doc """
   Takes list of instructions, turning into Keyword representation.
   """
   def into_keyword(directions_string) do
