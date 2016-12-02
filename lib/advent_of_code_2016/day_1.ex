@@ -8,6 +8,11 @@ defmodule AdventOfCode.Day1 do
     abs(x) + abs(y)
   end
 
+  def find_route_intersection(directions) do
+    directions
+    |> into_keyword
+    |> Enum.reduce_while({[], {:n, {0, 0}}}, &coordinates_unseen/2)
+  end
 
   @doc """
   Handle rotation or translation, returning transformed {bearing, coordinates}
@@ -51,5 +56,22 @@ defmodule AdventOfCode.Day1 do
   defp to_unary_translation({:rotation, _} = rotation), do: rotation
   defp to_unary_translation({:translation, translation}) do
     for i <- 1..translation, do: {:translation, 1}
+  end
+
+  defp coordinates_unseen({:rotation, _} = instruction, {past, current}) do
+    {:cont, {past, do_move(instruction, current)}}
+  end
+  defp coordinates_unseen({:translation, value}, {past, current}) do
+    {_, {x, y} = coords} = next = do_move({:translation, value}, current)
+
+    handle_translation(next, past)
+  end
+
+  defp handle_translation({_bearing, {x, y} = coords} = next, past) do
+    if coords in past do
+      {:halt, abs(x) + abs(y)}
+    else
+      {:cont, {[coords|past], next}}
+    end
   end
 end
