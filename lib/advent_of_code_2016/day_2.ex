@@ -1,11 +1,20 @@
 defmodule AdventOfCode.Day2 do
-  alias AdventOfCode.Day2.Pad1
+  alias AdventOfCode.Day2.{Pad1, Pad2}
 
   def run(instructions) do
     {_, seq} =
       instructions
       |> to_char_list
       |> Enum.reduce({%Pad1{}, []}, &handle_instruction/2)
+
+    seq |> Enum.reverse |> Enum.map(&(&1.current))
+  end
+
+  def run_b(instructions) do
+    {_, seq} =
+      instructions
+      |> to_char_list
+      |> Enum.reduce({%Pad2{}, []}, &handle_instruction/2)
 
     seq |> Enum.reverse |> Enum.map(&(&1.current))
   end
