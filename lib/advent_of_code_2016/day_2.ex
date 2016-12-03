@@ -5,9 +5,9 @@ defmodule AdventOfCode.Day2 do
     {_, seq} =
       instructions
       |> to_char_list
-      |> Enum.reduce({5, []}, &handle_instruction/2)
+      |> Enum.reduce({%Pad1{}, []}, &handle_instruction/2)
 
-    Enum.reverse(seq)
+    seq |> Enum.reverse |> Enum.map(&(&1.current))
   end
 
   def handle_instruction(?\n, {current, seq}), do: {current, [current|seq]}
