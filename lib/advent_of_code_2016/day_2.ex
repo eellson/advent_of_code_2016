@@ -11,8 +11,8 @@ defmodule AdventOfCode.Day2 do
   end
 
   def handle_instruction(?\n, {current, seq}), do: {current, [current|seq]}
-  def handle_instruction(?U, {current, seq}), do: {Pad1.up(current), seq}
-  def handle_instruction(?R, {current, seq}), do: {Pad1.right(current), seq}
-  def handle_instruction(?D, {current, seq}), do: {Pad1.down(current), seq}
-  def handle_instruction(?L, {current, seq}), do: {Pad1.left(current), seq}
+  def handle_instruction(?U, {%pad{} = current, seq}), do: {pad.up(current), seq}
+  def handle_instruction(?R, {%pad{} = current, seq}), do: {pad.right(current), seq}
+  def handle_instruction(?D, {%pad{} = current, seq}), do: {pad.down(current), seq}
+  def handle_instruction(?L, {%pad{} = current, seq}), do: {pad.left(current), seq}
 end
