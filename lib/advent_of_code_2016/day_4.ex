@@ -19,14 +19,14 @@ defmodule AdventOfCode.Day4 do
 
   def calc_checksum(name) do
     name
-    |> String.graphemes
-    |> Enum.filter(&(&1 != "-"))
+    |> String.to_charlist
+    |> Enum.filter(&(&1 != ?-))
     |> Enum.reduce(%{}, &count_into/2)
-    |> Enum.sort_by(fn {grapheme, count} -> count end, &>=/2)
-    |> Enum.map(fn {grapheme, count} -> grapheme end)
+    |> Enum.sort_by(fn {char, count} -> count end, &>=/2)
+    |> Enum.map(fn {char, count} -> char end)
     |> Enum.take(5)
-    |> Enum.join
+    |> List.to_string
   end
 
-  def count_into(grapheme, map), do: Map.update(map, grapheme, 1, &(&1 + 1))
+  def count_into(char, map), do: Map.update(map, char, 1, &(&1 + 1))
 end
