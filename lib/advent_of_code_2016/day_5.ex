@@ -7,6 +7,9 @@ defmodule AdventOfCode.Day5 do
       _n, acc when length(acc) >= 8 -> {:halt, acc}
       n, acc -> test(hash_context, acc, n, &handle_hex/2)
     end)
+    |> Enum.map(&get_character/1)
+    |> Enum.reverse
+    |> List.to_string
   end
 
   def test(hash_context, acc, i, test_and_accumulate_fn) do
