@@ -1,9 +1,7 @@
 defmodule AdventOfCode.Day5 do
   def run_a do
-    hash_context = "ojvtpuvg" |> new_hash_context
-
     Stream.iterate(0, &(&1 + 1))
-    |> Stream.map(&finalize_and_encode(hash_context, &1))
+    |> Stream.map(&hash_and_encode("ojvtpuvg", &1))
     |> Stream.filter_map(&five_zeros/1, &get_character/1)
     |> Enum.reduce_while([], &acc_incomplete/2)
     |> Enum.reverse
@@ -11,10 +9,8 @@ defmodule AdventOfCode.Day5 do
   end
 
   def run_b do
-    hash_context = "ojvtpuvg" |> new_hash_context
-
     Stream.iterate(0, &(&1 + 1))
-    |> Stream.map(&finalize_and_encode(hash_context, &1))
+    |> Stream.map(&hash_and_encode("ojvtpuvg", &1))
     |> Stream.filter_map(&zeros_and_position/1, &pos_and_char_tuple/1)
     |> Enum.reduce_while([], &put_new/2)
     |> Enum.sort_by(fn {pos, char} -> pos |> Atom.to_string |> String.to_integer end)
@@ -55,10 +51,9 @@ defmodule AdventOfCode.Day5 do
     :md5 |> :crypto.hash_init |> :crypto.hash_update(data)
   end
 
-  def finalize_and_encode(hash_context, i) do
-    hash_context
-    |> :crypto.hash_update(Integer.to_string(i))
-    |> :crypto.hash_final
+  def hash_and_encode(base, i) do
+    :md5
+    |> :crypto.hash([base, Integer.to_string(i)])
     |> Base.encode16(case: :lower)
   end
 end
