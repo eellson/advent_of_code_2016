@@ -22,18 +22,13 @@ defmodule AdventOfCode.Day5 do
   def five_zeros(_hex), do: false
 
   @valid_positions ["0", "1", "2", "3", "4", "5", "6", "7"]
-  def zeros_and_position(<<"00000",
-                     pos::binary-size(1),
-                     char::binary-size(1),
-                     _rest::binary>>) when pos in @valid_positions do
-    true
+  def zeros_and_position(<<"00000", pos::binary-size(1), _rest::binary>>)
+      when pos in @valid_positions do
+        true
   end
   def zeros_and_position(_), do: false
 
-  def pos_and_char_tuple(<<"00000",
-                     pos::binary-size(1),
-                     char::binary-size(1),
-                     _rest::binary>>) do
+  def pos_and_char_tuple(<<"00000", pos::binary-size(1), char::binary-size(1), _rest::binary>>) do
     {pos, char}
   end
 
@@ -46,10 +41,6 @@ defmodule AdventOfCode.Day5 do
   end
 
   def get_character(<<"00000", char::binary-size(1), rest::binary>>), do: char
-
-  def new_hash_context(data) do
-    :md5 |> :crypto.hash_init |> :crypto.hash_update(data)
-  end
 
   def hash_and_encode(base, i) do
     :md5
