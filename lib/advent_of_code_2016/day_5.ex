@@ -1,8 +1,11 @@
 defmodule AdventOfCode.Day5 do
+  alias Experimental.Flow
+
   def run_a do
     Stream.iterate(0, &(&1 + 1))
-    |> Stream.map(&hash_and_encode("ojvtpuvg", &1))
-    |> Stream.filter_map(&five_zeros/1, &get_character/1)
+    |> Flow.from_enumerable
+    |> Flow.map(&hash_and_encode("ojvtpuvg", &1))
+    |> Flow.filter_map(&five_zeros/1, &get_character/1)
     |> Enum.reduce_while([], &acc_incomplete/2)
     |> Enum.reverse
     |> List.to_string
@@ -10,8 +13,9 @@ defmodule AdventOfCode.Day5 do
 
   def run_b do
     Stream.iterate(0, &(&1 + 1))
-    |> Stream.map(&hash_and_encode("ojvtpuvg", &1))
-    |> Stream.filter_map(&zeros_and_position/1, &pos_and_char_tuple/1)
+    |> Flow.from_enumerable
+    |> Flow.map(&hash_and_encode("ojvtpuvg", &1))
+    |> Flow.filter_map(&zeros_and_position/1, &pos_and_char_tuple/1)
     |> Enum.reduce_while([], &put_new/2)
     |> Enum.sort_by(fn {pos, char} -> pos |> Atom.to_string |> String.to_integer end)
     |> Enum.map(fn {pos, char} -> char end)
