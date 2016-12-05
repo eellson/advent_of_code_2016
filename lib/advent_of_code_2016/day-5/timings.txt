@@ -1,0 +1,16 @@
+Entirely unscientific timings for results pre and post switching to Flow.
+
+Times at c33b904:
+
+iex(11)> :timer.tc(fn -> Day5.run_a end, [])
+{28893941, "4543c154"}
+iex(12)> :timer.tc(fn -> Day5.run_b end, [])
+{86822847, "1050cbbd"}
+
+Times at 24439d2:
+
+iex(2)> :timer.tc(fn -> Day5.run_a end, [])
+{15874413, "4543c154"}
+iex(4)> :timer.tc(fn -> Day5.run_b end, [])
+{51292668, "1050cbbd"}
+
