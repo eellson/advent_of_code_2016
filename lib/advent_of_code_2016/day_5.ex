@@ -1,24 +1,29 @@
 defmodule AdventOfCode.Day5 do
-  def run_a, do: "abc" |> new_hash_context |> search([])
+  def run_a do
+    hash_context = "ojvtpuvg" |> new_hash_context
 
-  def search(hash_context, results), do: search(hash_context, results, 0)
+    Stream.iterate(0, &(&1 + 1))
+    |> Enum.reduce_while([], fn
+      _n, acc when length(acc) >= 8 -> {:halt, acc}
+      n, acc -> test(hash_context, acc, n)
+    end)
+  end
 
-  def search(hash_context, results, i) when length(results) == 8, do: results
-  def search(hash_context, results, i) do
-    results = 
+  def test(hash_context, acc, i) do
+    acc =
       hash_context
       |> :crypto.hash_update(Integer.to_string(i))
       |> :crypto.hash_final
       |> Base.encode16
-      |> handle_hex(results)
+      |> handle_hex(acc)
 
-    search(hash_context, results, i + 1)
+    {:cont, acc}
   end
 
-  def handle_hex(<<"00000", char::binary-size(1), rest::binary>>, results) do
-    [char|results]
+  def handle_hex(<<"00000", char::binary-size(1), rest::binary>>, acc) do
+    [char|acc]
   end
-  def handle_hex(_hex, results), do: results
+  def handle_hex(_hex, acc), do: acc
 
   def new_hash_context(data) do
     :md5 |> :crypto.hash_init |> :crypto.hash_update(data)
