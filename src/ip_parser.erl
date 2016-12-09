@@ -1,8 +1,5 @@
 -module(ip_parser).
 -export([parse/1, parse_and_scan/1, format_error/1]).
--file("src/ip_parser.yrl", 14).
-
-unwrap({_,_,V}) -> V.
 
 -file("/usr/local/Cellar/erlang/18.3/lib/erlang/lib/parsetools-2.1.1/include/yeccpre.hrl", 0).
 %%
@@ -178,7 +175,7 @@ yecctoken2string(Other) ->
 
 
 
--file("src/ip_parser.erl", 181).
+-file("src/ip_parser.erl", 178).
 
 -dialyzer({nowarn_function, yeccpars2/7}).
 yeccpars2(0=S, Cat, Ss, Stack, T, Ts, Tzr) ->
@@ -346,4 +343,3 @@ yeccpars2_11_(__Stack0) ->
   end | __Stack].
 
 
--file("src/ip_parser.yrl", 17).

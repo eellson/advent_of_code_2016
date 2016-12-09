@@ -10,7 +10,3 @@ ip -> chars ip : ['$1'|'$2'].
 ip -> ip_end : [].
 
 hypernet_seq -> hype_begin chars hype_end : {hype, '$2'}.
-
-Erlang code.
-
-unwrap({_,_,V}) -> V.
