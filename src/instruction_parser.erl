@@ -1,6 +1,6 @@
 -module(instruction_parser).
 -export([parse/1, parse_and_scan/1, format_error/1]).
--file("src/day_8/instruction_parser.yrl", 12).
+-file("src/day_8/instruction_parser.yrl", 14).
 
 to_int({_Token, Char}) -> erlang:list_to_integer(Char).
 
@@ -381,7 +381,7 @@ yeccpars2_2_(__Stack0) ->
   end | __Stack].
 
 -compile({inline,yeccpars2_11_/1}).
--file("src/day_8/instruction_parser.yrl", 5).
+-file("src/day_8/instruction_parser.yrl", 6).
 yeccpars2_11_(__Stack0) ->
  [__7,__6,__5,__4,__3,__2,__1 | __Stack] = __Stack0,
  [begin
@@ -389,7 +389,7 @@ yeccpars2_11_(__Stack0) ->
   end | __Stack].
 
 -compile({inline,yeccpars2_16_/1}).
--file("src/day_8/instruction_parser.yrl", 6).
+-file("src/day_8/instruction_parser.yrl", 8).
 yeccpars2_16_(__Stack0) ->
  [__7,__6,__5,__4,__3,__2,__1 | __Stack] = __Stack0,
  [begin
@@ -413,4 +413,4 @@ yeccpars2_21_(__Stack0) ->
   end | __Stack].
 
 
--file("src/day_8/instruction_parser.yrl", 15).
+-file("src/day_8/instruction_parser.yrl", 17).
