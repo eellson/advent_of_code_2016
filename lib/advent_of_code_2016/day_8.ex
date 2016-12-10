@@ -8,6 +8,16 @@ defmodule AdventOfCode.Day8 do
     |> Enum.count
   end
 
+  def run_b do
+    "./lib/advent_of_code_2016/day_8/input.txt"
+    |> File.read!
+    |> parse
+    |> Enum.reduce(MapSet.new, &exec/2)
+    |> Enum.group_by(&x_range/1)
+    |> Enum.map(&into_letter/1)
+    |> Enum.map(&print/1)
+  end
+
   def exec({:rect, {x, y}}, on) do
     for x <- 0..x - 1, y <- 0..y - 1, into: on, do: {x, y}
   end
@@ -26,6 +36,35 @@ defmodule AdventOfCode.Day8 do
     with on <- Enum.reduce(to_delete, on, &(MapSet.delete(&2, &1))),
       do: Enum.reduce(to_put, on, &(MapSet.put(&2, &1)))
   end
+
+  def x_range({x, y}) when x in 0..4, do: 0
+  def x_range({x, y}) when x in 5..9, do: 5
+  def x_range({x, y}) when x in 10..14, do: 10
+  def x_range({x, y}) when x in 15..19, do: 15
+  def x_range({x, y}) when x in 20..24, do: 20
+  def x_range({x, y}) when x in 25..29, do: 25
+  def x_range({x, y}) when x in 30..34, do: 30
+  def x_range({x, y}) when x in 35..39, do: 35
+  def x_range({x, y}) when x in 40..44, do: 40
+  def x_range({x, y}) when x in 45..49, do: 45
+
+  def into_letter({mult, coords}) do
+    row = for x <- Enum.map(0..4, &(&1 + mult)), into: %{}, do: {x, nil}
+    base = for y <- 0..5, into: %{}, do: {y, row}
+
+    Enum.reduce(coords, base, fn {x, y}, base -> put_in base[y][x], :on end)
+  end
+
+  def print(matrix) do
+    Enum.each(matrix, &print_row/1)
+
+    IO.puts("\r")
+  end
+
+  def print_row({_, map}), do: map |> Enum.map(&print_char/1) |> IO.puts
+
+  def print_char({_, :on}), do: ?#
+  def print_char(_), do: ?\s
 
   def parse(string) do
     {:ok, tokens, _} =
