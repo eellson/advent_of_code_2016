@@ -2,13 +2,13 @@ Definitions.
 
 Rules.
 
-value : {token, {value}}.
-bot : {token, {bot}}.
-output : {token, {output}}.
-high : {token, {high}}.
-low : {token, {low}}.
+value : {token, {value, TokenLine}}.
+bot : {token, {bot, TokenLine}}.
+output : {token, {output, TokenLine}}.
+high : {token, {high, TokenLine}}.
+low : {token, {low, TokenLine}}.
 [0-9]+ : {token, {n, to_int(TokenChars)}}.
-\n : {token, {ins_end}}.
+\n : {token, {ins_end, TokenLine}}.
 \s : skip_token.
 goes : skip_token.
 gives : skip_token.

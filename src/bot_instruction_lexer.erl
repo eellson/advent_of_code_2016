@@ -448,21 +448,21 @@ yystate(S, Ics, Line, Tlen, Action, Alen) ->
 %% {token,Token} | {end_token, Token} | skip_token | {error,String}.
 %% Generated action function.
 
-yyaction(0, _, _, _) ->
-    yyaction_0();
-yyaction(1, _, _, _) ->
-    yyaction_1();
-yyaction(2, _, _, _) ->
-    yyaction_2();
-yyaction(3, _, _, _) ->
-    yyaction_3();
-yyaction(4, _, _, _) ->
-    yyaction_4();
+yyaction(0, _, _, TokenLine) ->
+    yyaction_0(TokenLine);
+yyaction(1, _, _, TokenLine) ->
+    yyaction_1(TokenLine);
+yyaction(2, _, _, TokenLine) ->
+    yyaction_2(TokenLine);
+yyaction(3, _, _, TokenLine) ->
+    yyaction_3(TokenLine);
+yyaction(4, _, _, TokenLine) ->
+    yyaction_4(TokenLine);
 yyaction(5, TokenLen, YYtcs, _) ->
     TokenChars = yypre(YYtcs, TokenLen),
     yyaction_5(TokenChars);
-yyaction(6, _, _, _) ->
-    yyaction_6();
+yyaction(6, _, _, TokenLine) ->
+    yyaction_6(TokenLine);
 yyaction(7, _, _, _) ->
     yyaction_7();
 yyaction(8, _, _, _) ->
@@ -477,40 +477,40 @@ yyaction(12, _, _, _) ->
     yyaction_12();
 yyaction(_, _, _, _) -> error.
 
--compile({inline,yyaction_0/0}).
+-compile({inline,yyaction_0/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 3).
-yyaction_0() ->
-     { token, { value } } .
+yyaction_0(TokenLine) ->
+     { token, { value, TokenLine } } .
 
--compile({inline,yyaction_1/0}).
+-compile({inline,yyaction_1/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 4).
-yyaction_1() ->
-     { token, { bot } } .
+yyaction_1(TokenLine) ->
+     { token, { bot, TokenLine } } .
 
--compile({inline,yyaction_2/0}).
+-compile({inline,yyaction_2/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 5).
-yyaction_2() ->
-     { token, { output } } .
+yyaction_2(TokenLine) ->
+     { token, { output, TokenLine } } .
 
--compile({inline,yyaction_3/0}).
+-compile({inline,yyaction_3/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 6).
-yyaction_3() ->
-     { token, { high } } .
+yyaction_3(TokenLine) ->
+     { token, { high, TokenLine } } .
 
--compile({inline,yyaction_4/0}).
+-compile({inline,yyaction_4/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 7).
-yyaction_4() ->
-     { token, { low } } .
+yyaction_4(TokenLine) ->
+     { token, { low, TokenLine } } .
 
 -compile({inline,yyaction_5/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 8).
 yyaction_5(TokenChars) ->
      { token, { n, to_int (TokenChars) } } .
 
--compile({inline,yyaction_6/0}).
+-compile({inline,yyaction_6/1}).
 -file("src/day_10/bot_instruction_lexer.xrl", 9).
-yyaction_6() ->
-     { token, { ins_end } } .
+yyaction_6(TokenLine) ->
+     { token, { ins_end, TokenLine } } .
 
 -compile({inline,yyaction_7/0}).
 -file("src/day_10/bot_instruction_lexer.xrl", 10).
