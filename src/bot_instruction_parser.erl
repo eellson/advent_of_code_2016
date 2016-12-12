@@ -1,8 +1,10 @@
 -module(bot_instruction_parser).
 -export([parse/1, parse_and_scan/1, format_error/1]).
--file("src/day_10/bot_instruction_parser.yrl", 17).
+-file("src/day_10/bot_instruction_parser.yrl", 23).
 
 get_value({n, Int}) -> Int.
+bot_name({n, Int}) -> list_to_atom("bot_" ++ integer_to_list(Int)).
+output_name({n, Int}) -> list_to_atom("output_" ++ integer_to_list(Int)).
 
 -file("/usr/local/Cellar/erlang/18.3/lib/erlang/lib/parsetools-2.1.1/include/yeccpre.hrl", 0).
 %%
@@ -178,7 +180,7 @@ yecctoken2string(Other) ->
 
 
 
--file("src/bot_instruction_parser.erl", 181).
+-file("src/bot_instruction_parser.erl", 183).
 
 -dialyzer({nowarn_function, yeccpars2/7}).
 yeccpars2(0=S, Cat, Ss, Stack, T, Ts, Tzr) ->
@@ -426,23 +428,27 @@ yeccpars2_2_(__Stack0) ->
 yeccpars2_8_(__Stack0) ->
  [__5,__4,__3,__2,__1 | __Stack] = __Stack0,
  [begin
-   { { value , get_value ( __2 ) } , { bot , get_value ( __4 ) } }
+   [ { value , get_value ( __2 ) } , { to , bot_name ( __4 ) } ]
   end | __Stack].
 
 -compile({inline,yeccpars2_18_/1}).
--file("src/day_10/bot_instruction_parser.yrl", 11).
+-file("src/day_10/bot_instruction_parser.yrl", 15).
 yeccpars2_18_(__Stack0) ->
  [__9,__8,__7,__6,__5,__4,__3,__2,__1 | __Stack] = __Stack0,
  [begin
-   { { bot , get_value ( __2 ) } , { output , get_value ( __5 ) } , { output , get_value ( __8 ) } }
+   [ { bot , bot_name ( __2 ) } ,
+    { instruction , [ { low , { output , get_value ( __5 ) } } ,
+    { high , output_name ( __8 ) } ] } ]
   end | __Stack].
 
 -compile({inline,yeccpars2_20_/1}).
--file("src/day_10/bot_instruction_parser.yrl", 9).
+-file("src/day_10/bot_instruction_parser.yrl", 11).
 yeccpars2_20_(__Stack0) ->
  [__9,__8,__7,__6,__5,__4,__3,__2,__1 | __Stack] = __Stack0,
  [begin
-   { { bot , get_value ( __2 ) } , { output , get_value ( __5 ) } , { bot , get_value ( __8 ) } }
+   [ { bot , bot_name ( __2 ) } ,
+    { instruction , [ { low , { output , get_value ( __5 ) } } ,
+    { high , bot_name ( __8 ) } ] } ]
   end | __Stack].
 
 -compile({inline,yeccpars2_25_/1}).
@@ -450,7 +456,9 @@ yeccpars2_20_(__Stack0) ->
 yeccpars2_25_(__Stack0) ->
  [__9,__8,__7,__6,__5,__4,__3,__2,__1 | __Stack] = __Stack0,
  [begin
-   { { bot , get_value ( __2 ) } , { bot , get_value ( __5 ) } , { bot , get_value ( __8 ) } }
+   [ { bot , bot_name ( __2 ) } ,
+    { instruction , [ { low , bot_name ( __5 ) } ,
+    { high , bot_name ( __8 ) } ] } ]
   end | __Stack].
 
 -compile({inline,yeccpars2_26_/1}).
@@ -462,4 +470,4 @@ yeccpars2_26_(__Stack0) ->
   end | __Stack].
 
 
--file("src/day_10/bot_instruction_parser.yrl", 20).
+-file("src/day_10/bot_instruction_parser.yrl", 28).
