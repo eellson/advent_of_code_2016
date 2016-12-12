@@ -10,13 +10,9 @@ defmodule AdventOfCode.Day10 do
   end
 
   def exec(value: value, to: bot), do: give(bot, value: value)
-  def exec(bot: bot, instruction: instruction) do
-    give(bot, instruction: instruction)
-  end
+  def exec(bot: bot, instruction: instruction), do: give(bot, instruction: instruction)
 
-  def give(name, thing) do
-    Bot.give(name, thing)
-  end
+  def give(name, thing), do: Bot.give(name, thing)
 
   defp lex(string) do
     string |> String.to_charlist() |> :bot_instruction_lexer.string()

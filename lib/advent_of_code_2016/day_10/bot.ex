@@ -13,9 +13,9 @@ defmodule AdventOfCode.Day10.Bot do
     Output.start_link
     Output.put(n, value)
   end
-  def give(name, value: value) do
+  def give(name, thing) do
     Bot.start_link(name: name)
-    GenServer.call(name, {:store_value, value})
+    GenServer.call(name, thing)
   end
   def give(name, instruction: instruction) do
     Bot.start_link(name: name)
@@ -28,11 +28,11 @@ defmodule AdventOfCode.Day10.Bot do
 
   def init(name), do: {:ok, %Bot{name: name}}
 
-  def handle_call({:store_value, value}, _from, bot) do
+  def handle_call([value: value], _from, bot) do
     bot = Map.update!(bot, :values, &([value | &1])) |> execute_instruction()
     {:reply, bot, bot}
   end
-  def handle_call({:store_instruction, instruction}, _from, bot) do
+  def handle_call([instruction: instruction], _from, bot) do
     bot = Map.update!(bot, :instructions, &([instruction | &1])) |> execute_instruction()
     {:reply, bot, bot}
   end
@@ -41,7 +41,7 @@ defmodule AdventOfCode.Day10.Bot do
   def execute_instruction(%Bot{values: values} = bot) when length(values) < 2, do: bot
   def execute_instruction(%Bot{values: values, instructions: instructions} = bot) do
     instruction = instructions |> Enum.reverse |> Enum.at(0)
-    values = values |> Enum.sort 
+    values = values |> Enum.sort
     {low_value, high_value} = {Enum.at(values, 0), Enum.at(values, -1)}
 
     if match?({^low_value, ^high_value}, {17, 61}), do: IO.inspect bot
